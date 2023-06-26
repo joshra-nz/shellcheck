@@ -1,0 +1,13 @@
+import csv
+import idna
+
+input_file = 'input.csv'
+output_file = 'output.csv'
+
+with open(input_file, 'r', encoding='utf-8') as csv_in, open(output_file, 'w', encoding='utf-8') as csv_out:
+    reader = csv.reader(csv_in)
+    writer = csv.writer(csv_out)
+    
+    for row in reader:
+        new_row = [idna.encode(field, uts46=True).decode() if any(u"\u0101" in s for s in field) else field for field in row]
+        writer.writerow(new_row)
